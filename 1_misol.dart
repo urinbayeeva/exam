@@ -34,10 +34,9 @@ class Words {
   @override
   bool operator ==(Object other) => other is Words && _word == other._word;
 
+
   String teskariunliHarflar() {
-    List<String> unlilar = ['a', 'e', 'i', 'o', 'u'];
-    List<String> harflar = _word.toLowerCase().split('');
-    List<String> teskariUnlilar = [];
+    List<String> unlilar = ['a', 'e', 'i', 'o', 'u'],  harflar = _word.toLowerCase().split(''), teskariUnlilar = [];
 
     for (String harf in harflar) {
       if (unlilar.contains(harf)) {
