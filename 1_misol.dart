@@ -60,8 +60,8 @@ void main() {
     Words word1 = Words("hello");
     Words word2 = Words("leetcode");
 
-    print(word1.reverseVowels()); 
-    print(word2.reverseVowels()); 
+    print(word1.reverseVowels()); // Output: holle
+    print(word2.reverseVowels()); // Output: leotcede
   } catch (e) {
     print(e);
   }
