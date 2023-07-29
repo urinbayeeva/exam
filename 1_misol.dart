@@ -1,64 +1,68 @@
-class WordsException implements Exception {
-  final String xabar;
-
-  WordsException(this.xabar);
-
-  @override
-  String toString() => 'WordsException($xabar)';
-}
-
 class Words {
-  final String _word;
+  final String word;
 
-  factory Words(String word) {
-    if (!word.toLowerCase().contains('aeiou')) {
-      throw WordsException("So'zda unli harflar qatnashishi shart!");
+  Words._(this.word);
+
+  factory Words(String input) {
+    if (input.isEmpty || !RegExp(r'^[a-z]+$').hasMatch(input)) {
+      throw InvalidWordException("Word should not be empty or should contain vowel letters!");
     }
-
-    return Words._internal(word);
+    return Words._(input);
   }
+  
+  String reverseVowels() {
+    List<String> vowels = ['a', 'e', 'i', 'o', 'u'];
+    String reversedWord = '';
+    List<String> wordChars = word.split('');
 
-  Words._internal(this._word);
-
-  @override
-  String toString() => "So'z $_word";
-
-  Words copyWith({String? word}) => Words(word ?? _word);
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-
-  @override
-  int get hashCode => _word.hashCode;
-
-  @override
-  bool operator ==(Object other) => other is Words && _word == other._word;
-
-
-  String teskariunliHarflar() {
-    List<String> unlilar = ['a', 'e', 'i', 'o', 'u'],  harflar = _word.toLowerCase().split(''), teskariUnlilar = [];
-
-    for (String harf in harflar) {
-      if (unlilar.contains(harf)) {
-        teskariUnlilar.add(harf);
+    for (var char in wordChars) {
+      if (vowels.contains(char)) {
+        reversedWord += char;
       }
     }
 
-    harflar.removeWhere((harf) => unlilar.contains(harf));
-    harflar.addAll(teskariUnlilar.reversed);
+    for (var i = 0, j = reversedWord.length - 1; i < wordChars.length; i++) {
+      if (vowels.contains(wordChars[i])) {
+        wordChars[i] = reversedWord[j];
+        j--;
+      }
+    }
 
-    return harflar.join();
+    return wordChars.join();
   }
+  
+  @override
+  String toString() {
+    return 'Word: $word';
+  }
+
+  Words copyWith({String? word}) {
+    return Words(word ?? this.word);
+  }
+
+  @override
+  bool operator ==(other) {
+    return (other is Words) && (other.word == this.word);
+  }
+
+  @override
+  int get hashCode => word.hashCode;
+}
+
+class InvalidWordException implements Exception {
+  final String message;
+
+  InvalidWordException(this.message);
 }
 
 void main() {
   try {
-    final words = Words('hello');
-    print(words.teskariunliHarflar());
+    Words word1 = Words("hello");
+    Words word2 = Words("leetcode");
 
-    final words2 = Words('leetcode');
-    print(words2.teskariunliHarflar()); 
-  } on WordsException catch (e) {
-    print(e); 
+    print(word1.reverseVowels()); 
+    print(word2.reverseVowels()); 
+  } catch (e) {
+    print(e);
   }
 }
